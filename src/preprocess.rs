@@ -38,7 +38,7 @@ fn unwrap_macro(uno_macro: Macro, macros: &Vec<Macro>) -> Vec<Token> {
                 let mut tokens = unwrap_macro(nmacro, macros);
                 unwrap_token.append(&mut tokens);
             } else {
-                println!("Unwrap Macros: Undentifier Not defined {}", token.value);
+                println!("{}:{}:{} Unwrap Macros: Undentifier Not defined {}", token.filename, token.row, token.col +1, token.value);
                 exit(1);
             }
         }
@@ -62,7 +62,9 @@ fn unwrap_macros(tokens: Vec<Token>, macros: Vec<Macro>) -> Vec<Token> {
                 let mut macro_tokens = unwrap_macro(macrom, &macros);
                 next_tokens.append(&mut macro_tokens);
             } else {
-                println!("Undentifier Not defined: {name}");
+                println!("{}:{}:{} Undentifier Not defined: {}",tokens[i].filename,
+                tokens[i].row,
+                tokens[i].col + 1,name);
                 exit(1);
             }
         }
@@ -93,13 +95,17 @@ fn preprocess_macro_decl(i: &mut usize, tokens: &[Token], macros: &mut Vec<Macro
     let macro_name: Token = tokens[*i].clone();
 
     if macro_name.token_type != TokenType::Ident {
-        println!("MacroDecl: Expected identifier");
+        println!("{}:{}:{} MacroDecl: Expected identifier", tokens[*i].filename,
+        tokens[*i].row,
+        tokens[*i].col + 1);
         exit(1);
     }
 
     for macron in &*macros {
         if macro_name.value == macron.name {
-            println!("Macro already defined: #define {}", macro_name.value);
+            println!("{}:{}:{} Macro already defined: #define {}", tokens[*i].filename,
+            tokens[*i].row,
+            tokens[*i].col + 1, macro_name.value);
             exit(1);
         }
     }
@@ -114,7 +120,9 @@ fn preprocess_macro_decl(i: &mut usize, tokens: &[Token], macros: &mut Vec<Macro
         let token = tokens[*i].clone();
 
         if is_macro_token(token.token_type.clone()) {
-            println!("Cannot Put Macro inside #define");
+            println!("{}:{}:{} Cannot Put Macro inside #define", tokens[*i].filename,
+            tokens[*i].row,
+            tokens[*i].col + 1);
             exit(1);
         } else {
             terms.push(token);
@@ -140,7 +148,9 @@ fn preprocess_ifdef_macro(
     let macro_name: Token = tokens[*i].clone();
 
     if macro_name.token_type != TokenType::Ident {
-        println!("Ifdef Macro: Expected identifier");
+        println!("{}:{}:{} Ifdef Macro: Expected identifier", tokens[*i].filename,
+        tokens[*i].row,
+        tokens[*i].col + 1);
         exit(1);
     }
 
@@ -214,7 +224,9 @@ fn preprocess_ifndef_macro(
     let macro_name: Token = tokens[*i].clone();
 
     if macro_name.token_type != TokenType::Ident {
-        println!("Ifdef Macro: Expected identifier");
+        println!("{}:{}:{} Ifdef Macro: Expected identifier", tokens[*i].filename,
+        tokens[*i].row,
+        tokens[*i].col + 1);
         exit(1);
     }
 
@@ -277,7 +289,12 @@ fn preprocess_ifndef_macro(
     }
 }
 
-fn preprocess_tape_decl(i: &mut usize, tokens: &[Token], tapes: &mut Vec<Tape>, macros: &Vec<Macro>) {
+fn preprocess_tape_decl(
+    i: &mut usize,
+    tokens: &[Token],
+    tapes: &mut Vec<Tape>,
+    macros: &Vec<Macro>,
+) {
     let mut tape = Tape {
         name: String::new(),
         size: Size::Byte,
@@ -289,7 +306,9 @@ fn preprocess_tape_decl(i: &mut usize, tokens: &[Token], tapes: &mut Vec<Tape>, 
     let name = tokens[*i].clone();
 
     if name.token_type != TokenType::Ident {
-        println!("TapeDecl: Expected identifier");
+        println!("{}:{}:{} TapeDecl: Expected identifier", tokens[*i].filename,
+        tokens[*i].row,
+        tokens[*i].col + 1);
         exit(1);
     }
 
@@ -301,8 +320,10 @@ fn preprocess_tape_decl(i: &mut usize, tokens: &[Token], tapes: &mut Vec<Tape>, 
 
     if size.token_type != TokenType::CellSize {
         println!(
-            "TapeDecl({}): Expected CellSize (byte, word, dword, qword) got {}",
-            tape.name, size.value
+            "{}:{}:{} TapeDecl({}): Expected CellSize (byte, word, dword, qword) got {}",
+            tokens[*i].filename,
+                tokens[*i].row,
+                tokens[*i].col + 1,tape.name, size.value
         );
         exit(1);
     }
@@ -317,7 +338,9 @@ fn preprocess_tape_decl(i: &mut usize, tokens: &[Token], tapes: &mut Vec<Tape>, 
         "qword" => Size::Qword,
 
         _ => {
-            println!("TapeDecl: Unreachable");
+            println!("{}:{}:{} TapeDecl: Unreachable", tokens[*i].filename,
+            tokens[*i].row,
+            tokens[*i].col + 1);
             exit(1);
         }
     };
@@ -326,21 +349,21 @@ fn preprocess_tape_decl(i: &mut usize, tokens: &[Token], tapes: &mut Vec<Tape>, 
 
     let mut cell_count = tokens[*i].clone();
 
-    if cell_count.token_type == TokenType::Ident{
-
-        
+    if cell_count.token_type == TokenType::Ident {
         let mut is_macro: bool = false;
         let mut macro_id: usize = 0;
-        
-        for (n, macrom) in macros.iter().enumerate(){
-            if macrom.name == cell_count.value{
+
+        for (n, macrom) in macros.iter().enumerate() {
+            if macrom.name == cell_count.value {
                 is_macro = true;
                 macro_id = n;
             }
         }
-        
-        if !is_macro{
-            println!("TapeDecl: Identifier {} not defined", cell_count.value);
+
+        if !is_macro {
+            println!("{}:{}:{} TapeDecl: Identifier {} not defined", tokens[*i].filename,
+            tokens[*i].row,
+            tokens[*i].col + 1, cell_count.value);
             exit(1);
         }
 
@@ -348,24 +371,28 @@ fn preprocess_tape_decl(i: &mut usize, tokens: &[Token], tapes: &mut Vec<Tape>, 
 
         let macro_tokens = unwrap_macro(macrom, macros);
 
-        if macro_tokens.len()>1{
-            println!("TapeDecl: Expected IntLit");
+        if macro_tokens.len() > 1 {
+            println!("{}:{}:{} TapeDecl: Expected IntLit", tokens[*i].filename,
+            tokens[*i].row,
+            tokens[*i].col + 1);
             exit(1);
         }
 
-        if macro_tokens[0].token_type != TokenType::IntLit{
-            println!("TapeDecl: Expected IntLit");
+        if macro_tokens[0].token_type != TokenType::IntLit {
+            println!("{}:{}:{} TapeDecl: Expected IntLit", tokens[*i].filename,
+            tokens[*i].row,
+            tokens[*i].col + 1);
             exit(1);
         }
-        
+
         cell_count = macro_tokens[0].clone();
-
     }
 
-
-    if cell_count.token_type != TokenType::IntLit  {
+    if cell_count.token_type != TokenType::IntLit {
         println!(
-            "TapeDecl({}): Expected IntLit got {}",
+            "{}:{}:{} TapeDecl({}): Expected IntLit got {}",tokens[*i].filename,
+            tokens[*i].row,
+            tokens[*i].col + 1,
             tape.name, size.value
         );
         exit(1);
@@ -377,7 +404,10 @@ fn preprocess_tape_decl(i: &mut usize, tokens: &[Token], tapes: &mut Vec<Tape>, 
 
     if tokens[*i].token_type != TokenType::NewLine {
         println!(
-            "TapeDecl({}): Expected a new line got {}",
+            "{}:{}:{} TapeDecl({}): Expected a new line got {}",
+            tokens[*i].filename,
+                tokens[*i].row,
+                tokens[*i].col + 1,
             tape.name, size.value
         );
         exit(1);
@@ -410,12 +440,16 @@ fn preprocess_macro(
         }
 
         TokenType::EndifMacro => {
-            println!("EndifMacro: You need to declare contition");
+            println!("{}:{}:{} EndifMacro: You need to declare contition", token.filename,
+            token.row,
+            token.col + 1);
             exit(1);
         }
 
         TokenType::ElseMacro => {
-            println!("ElseMacro: You need to declare contition");
+            println!("{}:{}:{} ElseMacro: You need to declare contition", token.filename,
+            token.row,
+            token.col + 1);
             exit(1);
         }
 
@@ -425,7 +459,11 @@ fn preprocess_macro(
 
         _ => {
             println!(
-                "Unreachable, there are only macro tokens got {}",
+                "{}:{}:{} Unreachable, there are only macro tokens got {}",
+                token.filename,
+                token.row,
+                token.col + 1
+                ,
                 token.value
             );
             exit(1);
@@ -475,7 +513,9 @@ fn preprocess_include(
         if file_name.token_type != TokenType::StringLit
             && file_name.token_type != TokenType::IncludePath
         {
-            println!("IncludeDecl: Expected String Literal or Include Path");
+            println!("{}:{}:{} IncludeDecl: Expected String Literal or Include Path", token.filename,
+            token.row,
+            token.col + 1);
             exit(1);
         }
 
@@ -512,7 +552,9 @@ fn preprocess_include(
                 if let Some(exists) = exists {
                     out = exists;
                 } else {
-                    println!("Could not find include: {}", file_name.value);
+                    println!("{}:{}:{} Could not find include: {}",token.filename,
+                    token.row,
+                    token.col + 1, file_name.value);
                     exit(1);
                 }
 
@@ -525,19 +567,29 @@ fn preprocess_include(
         // exit(1);
 
         if filename == current_path {
-            println!("IncludeDecl: Cannot include file in itself file: {filename}");
+            println!(
+                "{}:{}:{} IncludeDecl: Cannot include file in itself file: {filename}",
+                token.filename,
+                token.row,
+                token.col + 1
+            );
             exit(1);
         }
 
         if !filename.ends_with(".bf") {
-            println!("IncludeDecl: Brain fuck plus files must have .bf extension");
+            println!(
+                "{}:{}:{} IncludeDecl: Brain fuck plus files must have .bf extension",
+                token.filename,
+                token.row,
+                token.col + 1
+            );
             exit(1);
         }
 
         let contents =
             fs::read_to_string(filename.clone()).expect("Something went wrong reading the file");
 
-        let file_tokens = lex_file(contents);
+        let file_tokens = lex_file(contents, filename.clone());
 
         let mut file_i: usize = 0;
         let file_len: usize = file_tokens.len();

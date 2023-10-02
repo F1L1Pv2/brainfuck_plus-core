@@ -3,12 +3,13 @@ use std::process::exit;
 use crate::prelude::*;
 
 #[must_use]
-pub fn lex_file(contents: String) -> Vec<Token> {
+pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
     let mut comment_single = false;
     let mut comment_mul = false;
     let mut i: usize = 0;
     let len = contents.len();
     let mut tokens: Vec<Token> = Vec::new();
+    let mut row: usize = 1;
     while i < len {
         let ch = contents.chars().nth(i).unwrap();
         let next_char = if i + 1 < len {
@@ -17,91 +18,146 @@ pub fn lex_file(contents: String) -> Vec<Token> {
             '\0'
         };
         let checker = ch.to_string() + next_char.to_string().as_str();
+        let col: usize = i / row;
 
+        
         if !comment_mul && !comment_single {
             match ch {
                 '<' => {
                     tokens.push(Token {
                         token_type: TokenType::PointerLeft,
                         value: ch.to_string(),
+                        row,
+                        col,
+                        filename: filename.clone()
                     });
                 }
                 '>' => {
                     tokens.push(Token {
                         token_type: TokenType::PointerRight,
                         value: ch.to_string(),
+                        row,
+                        col,
+                        filename: filename.clone()
                     });
                 }
                 '&' => {
                     tokens.push(Token {
                         token_type: TokenType::PointerReset,
                         value: ch.to_string(),
+                        row,
+                        col,
+                        filename: filename.clone()
                     });
                 }
                 '+' => {
                     tokens.push(Token {
                         token_type: TokenType::Add,
                         value: ch.to_string(),
+                        row,
+                        col,
+                        filename: filename.clone()
                     });
                 }
                 '-' => {
                     tokens.push(Token {
                         token_type: TokenType::Sub,
                         value: ch.to_string(),
+                        row,
+                        col,
+                        filename: filename.clone()
                     });
                 }
                 ',' => {
                     tokens.push(Token {
                         token_type: TokenType::ReadByte,
                         value: ch.to_string(),
+                        row,
+                        col,
+                        filename: filename.clone()
                     });
                 }
                 '.' => {
                     tokens.push(Token {
                         token_type: TokenType::WriteByte,
                         value: ch.to_string(),
+                        row,
+                        col,
+                        filename: filename.clone()
                     });
                 }
                 '\'' => {
                     tokens.push(Token {
                         token_type: TokenType::Clear,
                         value: ch.to_string(),
+                        row,
+                        col,
+                        filename: filename.clone()
                     });
                 }
                 '%' => {
                     tokens.push(Token {
                         token_type: TokenType::BaseMemAddr,
                         value: ch.to_string(),
+                        row,
+                        col,
+                        filename: filename.clone()
                     });
                 }
                 '$' => {
                     tokens.push(Token {
                         token_type: TokenType::MemAddr,
                         value: ch.to_string(),
+                        row,
+                        col,
+                        filename: filename.clone()
                     });
                 }
                 '[' => {
                     tokens.push(Token {
                         token_type: TokenType::ZeroJump,
                         value: ch.to_string(),
+                        row,
+                        col,
+                        filename: filename.clone()
                     });
                 }
                 ']' => {
                     tokens.push(Token {
                         token_type: TokenType::NonZeroJump,
                         value: ch.to_string(),
+                        row,
+                        col,
+                        filename: filename.clone()
                     });
                 }
                 '?' => {
                     tokens.push(Token {
                         token_type: TokenType::Syscall,
                         value: ch.to_string(),
+                        row,
+                        col,
+                        filename: filename.clone()
                     });
                 }
                 '\n' => {
                     tokens.push(Token {
                         token_type: TokenType::NewLine,
                         value: ch.to_string(),
+                        row,
+                        col,
+                        filename: filename.clone()
+                    });
+                    row += 1;
+                }
+
+                '\0' => {
+                    tokens.push(Token {
+                        token_type: TokenType::NewLine,
+                        value: ch.to_string(),
+                        row,
+                        col,
+                        filename: filename.clone()
                     });
                 }
 
@@ -109,6 +165,9 @@ pub fn lex_file(contents: String) -> Vec<Token> {
                     tokens.push(Token {
                         token_type: TokenType::Push,
                         value: ch.to_string(),
+                        row,
+                        col,
+                        filename: filename.clone()
                     });
                 }
 
@@ -116,6 +175,9 @@ pub fn lex_file(contents: String) -> Vec<Token> {
                     tokens.push(Token {
                         token_type: TokenType::Pop,
                         value: ch.to_string(),
+                        row,
+                        col,
+                        filename: filename.clone()
                     });
                 }
 
@@ -123,6 +185,9 @@ pub fn lex_file(contents: String) -> Vec<Token> {
                     tokens.push(Token {
                         token_type: TokenType::StackDel,
                         value: ch.to_string(),
+                        row,
+                        col,
+                        filename: filename.clone()
                     });
                 }
 
@@ -130,30 +195,45 @@ pub fn lex_file(contents: String) -> Vec<Token> {
                     tokens.push(Token {
                         token_type: TokenType::CurrentTape,
                         value: ch.to_string(),
+                        row,
+                        col,
+                        filename: filename.clone()
                     });
                 }
                 ';' => {
                     tokens.push(Token {
                         token_type: TokenType::BitwiseLeft,
                         value: ch.to_string(),
+                        row,
+                        col,
+                        filename: filename.clone()
                     });
                 }
                 ':' => {
                     tokens.push(Token {
                         token_type: TokenType::BitwiseRight,
                         value: ch.to_string(),
+                        row,
+                        col,
+                        filename: filename.clone()
                     });
                 }
                 '|' => {
                     tokens.push(Token {
                         token_type: TokenType::BitwiseOr,
                         value: ch.to_string(),
+                        row,
+                        col,
+                        filename: filename.clone()
                     });
                 }
                 '\\' => {
                     tokens.push(Token {
                         token_type: TokenType::BitwiseAnd,
                         value: ch.to_string(),
+                        row,
+                        col,
+                        filename: filename.clone()
                     });
                 }
 
@@ -190,13 +270,10 @@ pub fn lex_file(contents: String) -> Vec<Token> {
                                 // println!("");
 
                                 if word.is_empty() {
-                                    println!("Something fucked up in lexer");
-                                    println!(
-                                        "Len: {} i: {} char: {}",
-                                        contents.len(),
-                                        i,
-                                        contents.chars().nth(i).unwrap()
-                                    );
+
+                                    
+
+                                    println!("{}:{}:{} Something fucked up in lexer", filename, row, col+1);
                                     exit(1);
                                 }
 
@@ -206,6 +283,9 @@ pub fn lex_file(contents: String) -> Vec<Token> {
                                         tokens.push(Token {
                                             token_type: TokenType::MacroDecl,
                                             value: word,
+                                            row,
+                                            col,
+                                            filename: filename.clone()
                                         });
                                         continue;
                                     }
@@ -214,6 +294,9 @@ pub fn lex_file(contents: String) -> Vec<Token> {
                                         tokens.push(Token {
                                             token_type: TokenType::IfdefMacro,
                                             value: word,
+                                            row,
+                                            col,
+                                            filename: filename.clone()
                                         });
                                         continue;
                                     }
@@ -222,6 +305,9 @@ pub fn lex_file(contents: String) -> Vec<Token> {
                                         tokens.push(Token {
                                             token_type: TokenType::IfNdefMacro,
                                             value: word,
+                                            row,
+                                            col,
+                                            filename: filename.clone()
                                         });
                                         continue;
                                     }
@@ -230,6 +316,9 @@ pub fn lex_file(contents: String) -> Vec<Token> {
                                         tokens.push(Token {
                                             token_type: TokenType::ElseMacro,
                                             value: word,
+                                            row,
+                                            col,
+                                            filename: filename.clone()
                                         });
                                         continue;
                                     }
@@ -238,6 +327,9 @@ pub fn lex_file(contents: String) -> Vec<Token> {
                                         tokens.push(Token {
                                             token_type: TokenType::EndifMacro,
                                             value: word,
+                                            row,
+                                            col,
+                                            filename: filename.clone()
                                         });
                                         continue;
                                     }
@@ -246,6 +338,9 @@ pub fn lex_file(contents: String) -> Vec<Token> {
                                         tokens.push(Token {
                                             token_type: TokenType::IncludeMacro,
                                             value: word,
+                                            row,
+                                            col,
+                                            filename: filename.clone()
                                         });
                                         continue;
                                     }
@@ -254,6 +349,9 @@ pub fn lex_file(contents: String) -> Vec<Token> {
                                         tokens.push(Token {
                                             token_type: TokenType::TapeDecl,
                                             value: word,
+                                            row,
+                                            col,
+                                            filename: filename.clone()
                                         });
                                         continue;
                                     }
@@ -262,6 +360,9 @@ pub fn lex_file(contents: String) -> Vec<Token> {
                                         tokens.push(Token {
                                             token_type: TokenType::CellSize,
                                             value: word,
+                                            row,
+                                            col,
+                                            filename: filename.clone()
                                         });
                                         continue;
                                     }
@@ -270,6 +371,9 @@ pub fn lex_file(contents: String) -> Vec<Token> {
                                         tokens.push(Token {
                                             token_type: TokenType::CellSize,
                                             value: word,
+                                            row,
+                                            col,
+                                            filename: filename.clone()
                                         });
                                         continue;
                                     }
@@ -278,6 +382,9 @@ pub fn lex_file(contents: String) -> Vec<Token> {
                                         tokens.push(Token {
                                             token_type: TokenType::CellSize,
                                             value: word,
+                                            row,
+                                            col,
+                                            filename: filename.clone()
                                         });
                                         continue;
                                     }
@@ -286,6 +393,9 @@ pub fn lex_file(contents: String) -> Vec<Token> {
                                         tokens.push(Token {
                                             token_type: TokenType::CellSize,
                                             value: word,
+                                            row,
+                                            col,
+                                            filename: filename.clone()
                                         });
                                         continue;
                                     }
@@ -294,6 +404,9 @@ pub fn lex_file(contents: String) -> Vec<Token> {
                                         tokens.push(Token {
                                             token_type: TokenType::Ident,
                                             value: word,
+                                            row,
+                                            col,
+                                            filename: filename.clone()
                                         });
                                         continue;
                                     }
@@ -326,9 +439,12 @@ pub fn lex_file(contents: String) -> Vec<Token> {
                                             value: new_str
                                                 .replace("\\n", "\n")
                                                 .replace("\\0", "\0"),
+                                            row,
+                                            col,
+                                            filename: filename.clone()
                                         });
                                     } else {
-                                        println!("Expected \" at the end of string lit");
+                                        println!("{}:{}:{} Expected \" at the end of string lit", filename, row, col+1);
                                         exit(1);
                                     }
                                 } else if word.starts_with('(') {
@@ -342,9 +458,12 @@ pub fn lex_file(contents: String) -> Vec<Token> {
                                         tokens.push(Token {
                                             token_type: TokenType::IncludePath,
                                             value: new_str,
+                                            row,
+                                            col,
+                                            filename: filename.clone()
                                         });
                                     } else {
-                                        println!("Expected ) at the end of include path");
+                                        println!("{}:{}:{} Expected ) at the end of include path", filename, row, col+1);
                                         exit(1);
                                     }
                                 } else if word.starts_with('{') {
@@ -358,9 +477,12 @@ pub fn lex_file(contents: String) -> Vec<Token> {
                                         tokens.push(Token {
                                             token_type: TokenType::TapeName,
                                             value: new_str,
+                                            row,
+                                            col,
+                                            filename: filename.clone()
                                         });
                                     } else {
-                                        println!("Expected }} at the end of tape name");
+                                        println!("{}:{}:{} Expected }} at the end of tape name", filename, row, col+1);
                                         exit(1);
                                     }
                                 } else {
@@ -376,9 +498,12 @@ pub fn lex_file(contents: String) -> Vec<Token> {
                                         tokens.push(Token {
                                             token_type: TokenType::IntLit,
                                             value: word,
+                                            row,
+                                            col,
+                                            filename: filename.clone()
                                         });
                                     } else {
-                                        println!("Expected int literal");
+                                        println!("{}:{}:{} Expected int literal", filename,row,col);
                                         exit(1);
                                     }
                                 }
@@ -398,6 +523,10 @@ pub fn lex_file(contents: String) -> Vec<Token> {
         } else {
             // print!("{}", ch);
 
+            if comment_mul && (checker.as_str() =="\0" || checker.as_str() == "\0"){
+                row += 1;
+            }
+
             if comment_mul && checker.as_str() == "*/" {
                 comment_mul = false;
                 comment_single = false;
@@ -405,6 +534,9 @@ pub fn lex_file(contents: String) -> Vec<Token> {
                 tokens.push(Token {
                     token_type: TokenType::NewLine,
                     value: "\n".to_string(),
+                    row,
+                    col,
+                    filename: filename.clone()
                 });
                 // println!("\nEnd of multi line comment]");
                 continue;
@@ -416,7 +548,11 @@ pub fn lex_file(contents: String) -> Vec<Token> {
                 tokens.push(Token {
                     token_type: TokenType::NewLine,
                     value: "\n".to_string(),
+                    row,
+                    col,
+                    filename: filename.clone()
                 });
+                row += 1;
                 // println!("\nEnd of single line comment]");
             }
             i += 1;

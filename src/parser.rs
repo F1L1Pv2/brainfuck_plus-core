@@ -9,6 +9,10 @@ fn trim_tokens(i: &mut usize, tokens: &Vec<Token>, token_type: TokenType) -> Ope
 
     let mut values: Vec<String> = Vec::new();
 
+    let row = tokens[*i].row;
+    let col = tokens[*i].col;
+    let filename: String = tokens[*i].filename.clone();
+
     while tokens[*i].token_type == token_type {
         count += 1;
         *i += 1;
@@ -23,6 +27,9 @@ fn trim_tokens(i: &mut usize, tokens: &Vec<Token>, token_type: TokenType) -> Ope
         count,
         values,
         tape: None,
+        row,
+        col,
+        filename,
     }
 }
 
@@ -64,7 +71,10 @@ pub fn parse_file(tokens: Vec<Token>, tapes: &[Tape]) -> Vec<Operation> {
                 let tape_name = tokens[i].clone();
                 if tape_name.token_type != TokenType::TapeName {
                     println!(
-                        "CurrentTape: Expected tape name after operation got {}",
+                        "{}:{}:{} CurrentTape: Expected tape name after operation got {}",
+                        token.filename,
+                        token.row,
+                        token.col + 1,
                         tape_name.value
                     );
                     exit(1);
@@ -83,7 +93,13 @@ pub fn parse_file(tokens: Vec<Token>, tapes: &[Tape]) -> Vec<Operation> {
                 };
 
                 if tape.is_none() {
-                    println!("Tape {} not defined", tape_name.value);
+                    println!(
+                        "{}:{}:{} Tape {} not defined",
+                        token.filename,
+                        token.col,
+                        token.row + 1,
+                        tape_name.value
+                    );
                     exit(1);
                 }
 
@@ -92,6 +108,9 @@ pub fn parse_file(tokens: Vec<Token>, tapes: &[Tape]) -> Vec<Operation> {
                     count: 1,
                     values: vec![token.value],
                     tape,
+                    row: token.row,
+                    col: token.col,
+                    filename: token.filename,
                 });
                 i += 1;
             }
@@ -102,6 +121,9 @@ pub fn parse_file(tokens: Vec<Token>, tapes: &[Tape]) -> Vec<Operation> {
                     count: 1,
                     values: vec![token.value],
                     tape: None,
+                    row: token.row,
+                    col: token.col,
+                    filename: token.filename,
                 });
                 i += 1;
             }

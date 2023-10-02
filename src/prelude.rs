@@ -58,6 +58,9 @@ pub struct Tape {
 pub struct Token {
     pub token_type: TokenType,
     pub value: String,
+    pub row: usize,
+    pub col: usize,
+    pub filename: String
 }
 
 #[derive(PartialEq, Debug)]
@@ -82,4 +85,7 @@ pub struct Operation {
     pub count: usize,
     pub values: Vec<String>,
     pub tape: Option<Tape>,
+    pub row: usize,
+    pub col: usize,
+    pub filename: String
 }
