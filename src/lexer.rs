@@ -20,7 +20,6 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
         let checker = ch.to_string() + next_char.to_string().as_str();
         let col: usize = i / row;
 
-        
         if !comment_mul && !comment_single {
             match ch {
                 '<' => {
@@ -29,7 +28,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                         value: ch.to_string(),
                         row,
                         col,
-                        filename: filename.clone()
+                        filename: filename.clone(),
                     });
                 }
                 '>' => {
@@ -38,7 +37,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                         value: ch.to_string(),
                         row,
                         col,
-                        filename: filename.clone()
+                        filename: filename.clone(),
                     });
                 }
                 '&' => {
@@ -47,7 +46,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                         value: ch.to_string(),
                         row,
                         col,
-                        filename: filename.clone()
+                        filename: filename.clone(),
                     });
                 }
                 '+' => {
@@ -56,7 +55,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                         value: ch.to_string(),
                         row,
                         col,
-                        filename: filename.clone()
+                        filename: filename.clone(),
                     });
                 }
                 '-' => {
@@ -65,7 +64,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                         value: ch.to_string(),
                         row,
                         col,
-                        filename: filename.clone()
+                        filename: filename.clone(),
                     });
                 }
                 ',' => {
@@ -74,7 +73,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                         value: ch.to_string(),
                         row,
                         col,
-                        filename: filename.clone()
+                        filename: filename.clone(),
                     });
                 }
                 '.' => {
@@ -83,7 +82,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                         value: ch.to_string(),
                         row,
                         col,
-                        filename: filename.clone()
+                        filename: filename.clone(),
                     });
                 }
                 '\'' => {
@@ -92,7 +91,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                         value: ch.to_string(),
                         row,
                         col,
-                        filename: filename.clone()
+                        filename: filename.clone(),
                     });
                 }
                 '%' => {
@@ -101,7 +100,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                         value: ch.to_string(),
                         row,
                         col,
-                        filename: filename.clone()
+                        filename: filename.clone(),
                     });
                 }
                 '$' => {
@@ -110,7 +109,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                         value: ch.to_string(),
                         row,
                         col,
-                        filename: filename.clone()
+                        filename: filename.clone(),
                     });
                 }
                 '[' => {
@@ -119,7 +118,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                         value: ch.to_string(),
                         row,
                         col,
-                        filename: filename.clone()
+                        filename: filename.clone(),
                     });
                 }
                 ']' => {
@@ -128,7 +127,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                         value: ch.to_string(),
                         row,
                         col,
-                        filename: filename.clone()
+                        filename: filename.clone(),
                     });
                 }
                 '?' => {
@@ -137,7 +136,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                         value: ch.to_string(),
                         row,
                         col,
-                        filename: filename.clone()
+                        filename: filename.clone(),
                     });
                 }
                 '\n' => {
@@ -146,7 +145,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                         value: ch.to_string(),
                         row,
                         col,
-                        filename: filename.clone()
+                        filename: filename.clone(),
                     });
                     row += 1;
                 }
@@ -157,7 +156,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                         value: ch.to_string(),
                         row,
                         col,
-                        filename: filename.clone()
+                        filename: filename.clone(),
                     });
                 }
 
@@ -167,7 +166,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                         value: ch.to_string(),
                         row,
                         col,
-                        filename: filename.clone()
+                        filename: filename.clone(),
                     });
                 }
 
@@ -177,7 +176,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                         value: ch.to_string(),
                         row,
                         col,
-                        filename: filename.clone()
+                        filename: filename.clone(),
                     });
                 }
 
@@ -187,7 +186,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                         value: ch.to_string(),
                         row,
                         col,
-                        filename: filename.clone()
+                        filename: filename.clone(),
                     });
                 }
 
@@ -197,7 +196,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                         value: ch.to_string(),
                         row,
                         col,
-                        filename: filename.clone()
+                        filename: filename.clone(),
                     });
                 }
                 ';' => {
@@ -206,7 +205,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                         value: ch.to_string(),
                         row,
                         col,
-                        filename: filename.clone()
+                        filename: filename.clone(),
                     });
                 }
                 ':' => {
@@ -215,7 +214,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                         value: ch.to_string(),
                         row,
                         col,
-                        filename: filename.clone()
+                        filename: filename.clone(),
                     });
                 }
                 '|' => {
@@ -224,7 +223,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                         value: ch.to_string(),
                         row,
                         col,
-                        filename: filename.clone()
+                        filename: filename.clone(),
                     });
                 }
                 '\\' => {
@@ -233,7 +232,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                         value: ch.to_string(),
                         row,
                         col,
-                        filename: filename.clone()
+                        filename: filename.clone(),
                     });
                 }
 
@@ -253,239 +252,116 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                     _ => {
                         // println!("unexpected token: {}", ch);
                         if !ch.is_whitespace() {
-                            if ch != '`' {
-                                // println!("Unexpected token: {}", ch);
-                                // println!("Idents and Macros not implemented yet");
-                                let mut word: String = String::new();
-                                // let nexty_ch = contents.chars().nth(i);
-                                while !contents.chars().nth(i).unwrap().is_whitespace() {
-                                    // print!("{}", contents.chars().nth(i).unwrap());
-                                    // println!("{}",contents.chars().nth(i).unwrap());
-                                    word += contents.chars().nth(i).unwrap().to_string().as_str();
+                            match ch {
+                                '\"' => {
+                                    let mut word: String = String::new();
+
                                     i += 1;
-                                    if contents.chars().nth(i).is_none() {
-                                        break;
+                                    // let nexty_ch = contents.chars().nth(i);
+                                    while contents.chars().nth(i).unwrap() != '\"' {
+                                        // print!("{}", contents.chars().nth(i).unwrap());
+                                        // println!("{}",contents.chars().nth(i).unwrap());
+                                        word +=
+                                            contents.chars().nth(i).unwrap().to_string().as_str();
+                                        i += 1;
+                                        if contents.chars().nth(i).is_none() {
+                                            break;
+                                        }
                                     }
+
+                                    let mut new_str: String = String::new();
+                                    // let len: usize = word.len() - 1;
+                                    for n in 0..word.len() {
+                                        let ch = word.chars().nth(n).unwrap().to_string();
+                                        new_str += ch.as_str();
+                                    }
+                                    tokens.push(Token {
+                                        token_type: TokenType::StringLit,
+                                        value: new_str.replace("\\n", "\n").replace("\\0", "\0"),
+                                        row,
+                                        col,
+                                        filename: filename.clone(),
+                                    });
                                 }
-                                // println!("");
 
-                                if word.is_empty() {
+                                '(' => {
+                                    let mut word: String = String::new();
 
-                                    
-
-                                    println!("{}:{}:{} Something fucked up in lexer", filename, row, col+1);
-                                    exit(1);
-                                }
-
-                                // println!("Word: \"{}\"", word);
-                                match word.to_lowercase().as_str() {
-                                    "#define" => {
-                                        tokens.push(Token {
-                                            token_type: TokenType::MacroDecl,
-                                            value: word,
-                                            row,
-                                            col,
-                                            filename: filename.clone()
-                                        });
-                                        continue;
-                                    }
-
-                                    "#ifdef" => {
-                                        tokens.push(Token {
-                                            token_type: TokenType::IfdefMacro,
-                                            value: word,
-                                            row,
-                                            col,
-                                            filename: filename.clone()
-                                        });
-                                        continue;
-                                    }
-
-                                    "#ifndef" => {
-                                        tokens.push(Token {
-                                            token_type: TokenType::IfNdefMacro,
-                                            value: word,
-                                            row,
-                                            col,
-                                            filename: filename.clone()
-                                        });
-                                        continue;
-                                    }
-
-                                    "#else" => {
-                                        tokens.push(Token {
-                                            token_type: TokenType::ElseMacro,
-                                            value: word,
-                                            row,
-                                            col,
-                                            filename: filename.clone()
-                                        });
-                                        continue;
-                                    }
-
-                                    "#endif" => {
-                                        tokens.push(Token {
-                                            token_type: TokenType::EndifMacro,
-                                            value: word,
-                                            row,
-                                            col,
-                                            filename: filename.clone()
-                                        });
-                                        continue;
-                                    }
-
-                                    "#include" => {
-                                        tokens.push(Token {
-                                            token_type: TokenType::IncludeMacro,
-                                            value: word,
-                                            row,
-                                            col,
-                                            filename: filename.clone()
-                                        });
-                                        continue;
-                                    }
-
-                                    "#tape" => {
-                                        tokens.push(Token {
-                                            token_type: TokenType::TapeDecl,
-                                            value: word,
-                                            row,
-                                            col,
-                                            filename: filename.clone()
-                                        });
-                                        continue;
-                                    }
-
-                                    "byte" => {
-                                        tokens.push(Token {
-                                            token_type: TokenType::CellSize,
-                                            value: word,
-                                            row,
-                                            col,
-                                            filename: filename.clone()
-                                        });
-                                        continue;
-                                    }
-
-                                    "word" => {
-                                        tokens.push(Token {
-                                            token_type: TokenType::CellSize,
-                                            value: word,
-                                            row,
-                                            col,
-                                            filename: filename.clone()
-                                        });
-                                        continue;
-                                    }
-
-                                    "dword" => {
-                                        tokens.push(Token {
-                                            token_type: TokenType::CellSize,
-                                            value: word,
-                                            row,
-                                            col,
-                                            filename: filename.clone()
-                                        });
-                                        continue;
-                                    }
-
-                                    "qword" => {
-                                        tokens.push(Token {
-                                            token_type: TokenType::CellSize,
-                                            value: word,
-                                            row,
-                                            col,
-                                            filename: filename.clone()
-                                        });
-                                        continue;
-                                    }
-
-                                    _ => {
-                                        tokens.push(Token {
-                                            token_type: TokenType::Ident,
-                                            value: word,
-                                            row,
-                                            col,
-                                            filename: filename.clone()
-                                        });
-                                        continue;
-                                    }
-                                }
-                            } else {
-                                let mut word: String = String::new();
-
-                                i += 1;
-                                // let nexty_ch = contents.chars().nth(i);
-                                while contents.chars().nth(i).unwrap() != '`' {
-                                    // print!("{}", contents.chars().nth(i).unwrap());
-                                    // println!("{}",contents.chars().nth(i).unwrap());
-                                    word += contents.chars().nth(i).unwrap().to_string().as_str();
                                     i += 1;
-                                    if contents.chars().nth(i).is_none() {
-                                        break;
+                                    // let nexty_ch = contents.chars().nth(i);
+                                    while contents.chars().nth(i).unwrap() != ')' {
+                                        // print!("{}", contents.chars().nth(i).unwrap());
+                                        // println!("{}",contents.chars().nth(i).unwrap());
+                                        word +=
+                                            contents.chars().nth(i).unwrap().to_string().as_str();
+                                        i += 1;
+                                        if contents.chars().nth(i).is_none() {
+                                            break;
+                                        }
                                     }
+
+                                    let mut new_str: String = String::new();
+                                    // let len: usize = word.len() - 1;
+                                    for n in 0..word.len() {
+                                        let ch = word.chars().nth(n).unwrap().to_string();
+                                        new_str += ch.as_str();
+                                    }
+                                    tokens.push(Token {
+                                        token_type: TokenType::IncludePath,
+                                        value: new_str,
+                                        row,
+                                        col,
+                                        filename: filename.clone(),
+                                    });
                                 }
 
-                                if word.starts_with('\"') {
-                                    if word.ends_with('\"') {
-                                        let mut new_str: String = String::new();
-                                        let len: usize = word.len() - 1;
-                                        for n in 1..len {
-                                            let ch = word.chars().nth(n).unwrap().to_string();
-                                            new_str += ch.as_str();
+                                '{' => {
+                                    let mut word: String = String::new();
+
+                                    i += 1;
+                                    // let nexty_ch = contents.chars().nth(i);
+                                    while contents.chars().nth(i).unwrap() != '}' {
+                                        // print!("{}", contents.chars().nth(i).unwrap());
+                                        // println!("{}",contents.chars().nth(i).unwrap());
+                                        word +=
+                                            contents.chars().nth(i).unwrap().to_string().as_str();
+                                        i += 1;
+                                        if contents.chars().nth(i).is_none() {
+                                            break;
                                         }
-                                        tokens.push(Token {
-                                            token_type: TokenType::StringLit,
-                                            value: new_str
-                                                .replace("\\n", "\n")
-                                                .replace("\\0", "\0"),
-                                            row,
-                                            col,
-                                            filename: filename.clone()
-                                        });
-                                    } else {
-                                        println!("{}:{}:{} Expected \" at the end of string lit", filename, row, col+1);
-                                        exit(1);
                                     }
-                                } else if word.starts_with('(') {
-                                    if word.ends_with(')') {
-                                        let mut new_str: String = String::new();
-                                        let len: usize = word.len() - 1;
-                                        for n in 1..len {
-                                            let ch = word.chars().nth(n).unwrap().to_string();
-                                            new_str += ch.as_str();
+
+                                    let mut new_str: String = String::new();
+                                    // let len: usize = word.len() - 1;
+                                    for n in 0..word.len() {
+                                        let ch = word.chars().nth(n).unwrap().to_string();
+                                        new_str += ch.as_str();
+                                    }
+                                    tokens.push(Token {
+                                        token_type: TokenType::TapeName,
+                                        value: new_str,
+                                        row,
+                                        col,
+                                        filename: filename.clone(),
+                                    });
+                                }
+
+                                '`' => {
+                                    let mut word: String = String::new();
+
+                                    i += 1;
+                                    // let nexty_ch = contents.chars().nth(i);
+                                    while contents.chars().nth(i).unwrap() != '`' {
+                                        // print!("{}", contents.chars().nth(i).unwrap());
+                                        // println!("{}",contents.chars().nth(i).unwrap());
+                                        word +=
+                                            contents.chars().nth(i).unwrap().to_string().as_str();
+                                        i += 1;
+                                        if contents.chars().nth(i).is_none() {
+                                            break;
                                         }
-                                        tokens.push(Token {
-                                            token_type: TokenType::IncludePath,
-                                            value: new_str,
-                                            row,
-                                            col,
-                                            filename: filename.clone()
-                                        });
-                                    } else {
-                                        println!("{}:{}:{} Expected ) at the end of include path", filename, row, col+1);
-                                        exit(1);
                                     }
-                                } else if word.starts_with('{') {
-                                    if word.ends_with('}') {
-                                        let mut new_str: String = String::new();
-                                        let len: usize = word.len() - 1;
-                                        for n in 1..len {
-                                            let ch = word.chars().nth(n).unwrap().to_string();
-                                            new_str += ch.as_str();
-                                        }
-                                        tokens.push(Token {
-                                            token_type: TokenType::TapeName,
-                                            value: new_str,
-                                            row,
-                                            col,
-                                            filename: filename.clone()
-                                        });
-                                    } else {
-                                        println!("{}:{}:{} Expected }} at the end of tape name", filename, row, col+1);
-                                        exit(1);
-                                    }
-                                } else {
+
                                     let mut is_number = true;
                                     for ch in word.chars() {
                                         if !ch.is_ascii_digit() {
@@ -500,20 +376,183 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                                             value: word,
                                             row,
                                             col,
-                                            filename: filename.clone()
+                                            filename: filename.clone(),
                                         });
                                     } else {
-                                        println!("{}:{}:{} Expected int literal", filename,row,col);
+                                        println!(
+                                            "{}:{}:{} Expected int literal",
+                                            filename, row, col
+                                        );
                                         exit(1);
                                     }
                                 }
 
-                                // println!("{}",word);
+                                _ => {
+                                    // println!("Unexpected token: {}", ch);
+                                    // println!("Idents and Macros not implemented yet");
+                                    let mut word: String = String::new();
+                                    // let nexty_ch = contents.chars().nth(i);
+                                    while !contents.chars().nth(i).unwrap().is_whitespace() {
+                                        // print!("{}", contents.chars().nth(i).unwrap());
+                                        // println!("{}",contents.chars().nth(i).unwrap());
+                                        word +=
+                                            contents.chars().nth(i).unwrap().to_string().as_str();
+                                        i += 1;
+                                        if contents.chars().nth(i).is_none() {
+                                            break;
+                                        }
+                                    }
+                                    // println!("");
 
-                                // exit(1);
+                                    if word.is_empty() {
+                                        println!(
+                                            "{}:{}:{} Something fucked up in lexer",
+                                            filename,
+                                            row,
+                                            col + 1
+                                        );
+                                        exit(1);
+                                    }
 
-                                // println!("Literals arent supported yet");
-                                // exit(1);
+                                    // println!("Word: \"{}\"", word);
+                                    match word.to_lowercase().as_str() {
+                                        "#define" => {
+                                            tokens.push(Token {
+                                                token_type: TokenType::MacroDecl,
+                                                value: word,
+                                                row,
+                                                col,
+                                                filename: filename.clone(),
+                                            });
+                                            continue;
+                                        }
+
+                                        "#ifdef" => {
+                                            tokens.push(Token {
+                                                token_type: TokenType::IfdefMacro,
+                                                value: word,
+                                                row,
+                                                col,
+                                                filename: filename.clone(),
+                                            });
+                                            continue;
+                                        }
+
+                                        "#ifndef" => {
+                                            tokens.push(Token {
+                                                token_type: TokenType::IfNdefMacro,
+                                                value: word,
+                                                row,
+                                                col,
+                                                filename: filename.clone(),
+                                            });
+                                            continue;
+                                        }
+
+                                        "#else" => {
+                                            tokens.push(Token {
+                                                token_type: TokenType::ElseMacro,
+                                                value: word,
+                                                row,
+                                                col,
+                                                filename: filename.clone(),
+                                            });
+                                            continue;
+                                        }
+
+                                        "#endif" => {
+                                            tokens.push(Token {
+                                                token_type: TokenType::EndifMacro,
+                                                value: word,
+                                                row,
+                                                col,
+                                                filename: filename.clone(),
+                                            });
+                                            continue;
+                                        }
+
+                                        "#include" => {
+                                            tokens.push(Token {
+                                                token_type: TokenType::IncludeMacro,
+                                                value: word,
+                                                row,
+                                                col,
+                                                filename: filename.clone(),
+                                            });
+                                            continue;
+                                        }
+
+                                        "#tape" => {
+                                            tokens.push(Token {
+                                                token_type: TokenType::TapeDecl,
+                                                value: word,
+                                                row,
+                                                col,
+                                                filename: filename.clone(),
+                                            });
+                                            continue;
+                                        }
+
+                                        "byte" => {
+                                            tokens.push(Token {
+                                                token_type: TokenType::CellSize,
+                                                value: word,
+                                                row,
+                                                col,
+                                                filename: filename.clone(),
+                                            });
+                                            continue;
+                                        }
+
+                                        "word" => {
+                                            tokens.push(Token {
+                                                token_type: TokenType::CellSize,
+                                                value: word,
+                                                row,
+                                                col,
+                                                filename: filename.clone(),
+                                            });
+                                            continue;
+                                        }
+
+                                        "dword" => {
+                                            tokens.push(Token {
+                                                token_type: TokenType::CellSize,
+                                                value: word,
+                                                row,
+                                                col,
+                                                filename: filename.clone(),
+                                            });
+                                            continue;
+                                        }
+
+                                        "qword" => {
+                                            tokens.push(Token {
+                                                token_type: TokenType::CellSize,
+                                                value: word,
+                                                row,
+                                                col,
+                                                filename: filename.clone(),
+                                            });
+                                            continue;
+                                        }
+
+                                        _ => {
+
+                                            // dbg!(&word);
+                                            // exit(1);
+
+                                            tokens.push(Token {
+                                                token_type: TokenType::Ident,
+                                                value: word,
+                                                row,
+                                                col,
+                                                filename: filename.clone(),
+                                            });
+                                            continue;
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -523,7 +562,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
         } else {
             // print!("{}", ch);
 
-            if comment_mul && (checker.as_str() =="\0" || checker.as_str() == "\0"){
+            if comment_mul && (checker.as_str() == "\0" || checker.as_str() == "\0") {
                 row += 1;
             }
 
@@ -536,7 +575,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                     value: "\n".to_string(),
                     row,
                     col,
-                    filename: filename.clone()
+                    filename: filename.clone(),
                 });
                 // println!("\nEnd of multi line comment]");
                 continue;
@@ -550,7 +589,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                     value: "\n".to_string(),
                     row,
                     col,
-                    filename: filename.clone()
+                    filename: filename.clone(),
                 });
                 row += 1;
                 // println!("\nEnd of single line comment]");
