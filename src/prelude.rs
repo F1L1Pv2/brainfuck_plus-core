@@ -63,23 +63,7 @@ pub struct Token {
     pub filename: String
 }
 
-#[derive(PartialEq, Debug)]
-pub struct Condition {
-    pub addr: usize,
-}
-
-#[derive(PartialEq, Debug)]
-pub struct Forward {
-    pub back_addr: usize,
-}
-
-#[derive(PartialEq, Debug)]
-pub enum Jumps {
-    Condition(Condition),
-    Forward(Forward),
-}
-
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Operation {
     pub token_type: TokenType,
     pub count: usize,
@@ -88,40 +72,4 @@ pub struct Operation {
     pub row: usize,
     pub col: usize,
     pub filename: String
-}
-
-pub fn cross_reference(operations: &[Operation]) -> Vec<Jumps> {
-    let mut jumps: Vec<Jumps> = Vec::new();
-
-    for operation in operations {
-        match operation.token_type {
-            TokenType::ZeroJump => {
-                jumps.push(Jumps::Condition(Condition { addr: 0 }));
-            }
-            TokenType::NonZeroJump => {
-                let len = jumps.len();
-
-                //find the last condition
-                let mut last_condition = 0;
-                for j in (0..len).rev() {
-                    if jumps[j] == Jumps::Condition(Condition { addr: 0 }) {
-                        last_condition = j;
-                        break;
-                    }
-                }
-
-                if let Jumps::Condition(ref mut condition) = jumps[last_condition] {
-                    condition.addr = len;
-                }
-
-                //set the address of the forward to last condition
-                jumps.push(Jumps::Forward(Forward {
-                    back_addr: last_condition,
-                }));
-            }
-            _ => {}
-        }
-    }
-
-    jumps
 }
