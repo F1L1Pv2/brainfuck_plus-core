@@ -180,7 +180,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                     });
                 }
 
-                '*' => {
+                '!' => {
                     tokens.push(Token {
                         token_type: TokenType::StackDel,
                         value: ch.to_string(),
