@@ -10,6 +10,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
     let len = contents.len();
     let mut tokens: Vec<Token> = Vec::new();
     let mut row: usize = 1;
+    let mut col: usize = 1;
     while i < len {
         let ch = contents.chars().nth(i).unwrap();
         let next_char = if i + 1 < len {
@@ -18,7 +19,7 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
             '\0'
         };
         let checker = ch.to_string() + next_char.to_string().as_str();
-        let col: usize = i / row;
+        col = i / row;
 
         if !comment_mul && !comment_single {
             match ch {
@@ -346,53 +347,59 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                                     });
                                 }
 
-                                '`' => {
-                                    let mut word: String = String::new();
+                                // '`' => {
+                                //     let mut word: String = String::new();
 
-                                    i += 1;
-                                    // let nexty_ch = contents.chars().nth(i);
-                                    while contents.chars().nth(i).unwrap() != '`' {
-                                        // print!("{}", contents.chars().nth(i).unwrap());
-                                        // println!("{}",contents.chars().nth(i).unwrap());
-                                        word +=
-                                            contents.chars().nth(i).unwrap().to_string().as_str();
-                                        i += 1;
-                                        if contents.chars().nth(i).is_none() {
-                                            break;
-                                        }
-                                    }
+                                //     i += 1;
+                                //     // let nexty_ch = contents.chars().nth(i);
+                                //     while contents.chars().nth(i).unwrap() != '`' {
+                                //         // print!("{}", contents.chars().nth(i).unwrap());
+                                //         // println!("{}",contents.chars().nth(i).unwrap());
+                                //         word +=
+                                //             contents.chars().nth(i).unwrap().to_string().as_str();
+                                //         i += 1;
+                                //         if contents.chars().nth(i).is_none() {
+                                //             break;
+                                //         }
+                                //     }
 
-                                    let mut is_number = true;
-                                    for ch in word.chars() {
-                                        if !ch.is_ascii_digit() {
-                                            is_number = false;
-                                            break;
-                                        }
-                                    }
+                                //     let mut is_number = true;
+                                //     for ch in word.chars() {
+                                //         if !ch.is_ascii_digit() {
+                                //             is_number = false;
+                                //             break;
+                                //         }
+                                //     }
 
-                                    if is_number {
-                                        tokens.push(Token {
-                                            token_type: TokenType::IntLit,
-                                            value: word,
-                                            row,
-                                            col,
-                                            filename: filename.clone(),
-                                        });
-                                    } else {
-                                        println!(
-                                            "{}:{}:{} Expected int literal",
-                                            filename, row, col
-                                        );
-                                        exit(1);
-                                    }
-                                }
+                                //     if is_number {
+                                //         tokens.push(Token {
+                                //             token_type: TokenType::IntLit,
+                                //             value: word,
+                                //             row,
+                                //             col,
+                                //             filename: filename.clone(),
+                                //         });
+                                //     } else {
+                                //         println!(
+                                //             "{}:{}:{} Expected int literal",
+                                //             filename, row, col
+                                //         );
+                                //         exit(1);
+                                //     }
+                                // }
 
                                 _ => {
                                     // println!("Unexpected token: {}", ch);
                                     // println!("Idents and Macros not implemented yet");
                                     let mut word: String = String::new();
                                     // let nexty_ch = contents.chars().nth(i);
-                                    while !contents.chars().nth(i).unwrap().is_whitespace() {
+
+                                    while 
+                                    // !contents.chars().nth(i).unwrap().is_whitespace() 
+                                    contents.chars().nth(i).unwrap().is_ascii_graphic() 
+                                    // && contents.chars().nth(i).unwrap() != '`' &&
+                                    // contents.chars().nth(i).unwrap() != '\n'
+                                    {
                                         // print!("{}", contents.chars().nth(i).unwrap());
                                         // println!("{}",contents.chars().nth(i).unwrap());
                                         word +=
@@ -538,17 +545,34 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
                                         }
 
                                         _ => {
-
                                             // dbg!(&word);
                                             // exit(1);
 
-                                            tokens.push(Token {
-                                                token_type: TokenType::Ident,
-                                                value: word,
-                                                row,
-                                                col,
-                                                filename: filename.clone(),
-                                            });
+                                            let mut is_number = true;
+                                            for ch in word.chars() {
+                                                if !ch.is_ascii_digit() {
+                                                    is_number = false;
+                                                    break;
+                                                }
+                                            }
+
+                                            if is_number {
+                                                tokens.push(Token {
+                                                    token_type: TokenType::IntLit,
+                                                    value: word,
+                                                    row,
+                                                    col,
+                                                    filename: filename.clone(),
+                                                });
+                                            } else {
+                                                tokens.push(Token {
+                                                    token_type: TokenType::Ident,
+                                                    value: word,
+                                                    row,
+                                                    col,
+                                                    filename: filename.clone(),
+                                                });
+                                            }
                                             continue;
                                         }
                                     }
@@ -597,5 +621,12 @@ pub fn lex_file(contents: String, filename: String) -> Vec<Token> {
             i += 1;
         }
     }
+    tokens.push(Token {
+        token_type: TokenType::NewLine,
+        value: "\n".to_string(),
+        row,
+        col,
+        filename: filename.clone(),
+    });
     tokens
 }
