@@ -647,16 +647,70 @@ fn include_includes(
     new_tokens
 }
 
+fn discover_extern_funcs(tokens: &[Token]) -> (Vec<String>, Vec<Token>){
+    let mut i: usize = 0;
+    let len: usize = tokens.len();
+
+    let mut extern_funcs: Vec<String> = Vec::new();
+    let mut new_tokens: Vec<Token> = Vec::new();
+
+    while i < len{
+
+        let token: Token = tokens[i].clone();
+
+        if token.token_type == TokenType::ExternFuncDecl{
+            i+=1;
+            let ident = tokens[i].clone();
+            if ident.token_type != TokenType::Ident{
+                println!(
+                    "{}:{}:{} ExternFuncDecl: Expected Identifier got {:?}",
+                    token.filename,
+                    token.row,
+                    token.col + 1,
+                    token.token_type
+                );
+                exit(1);
+            }
+
+            i+=1;
+
+            if tokens[i].token_type != TokenType::NewLine{
+                println!(
+                    "{}:{}:{} ExternFuncDecl: Expected NewLine got {:?}",
+                    token.filename,
+                    token.row,
+                    token.col + 1,
+                    token.token_type
+                );
+                exit(1);
+            }
+
+            extern_funcs.push(ident.value);
+
+        }else{
+            new_tokens.push(token);
+        }
+
+        i+=1;
+    }
+
+    (extern_funcs, new_tokens)
+}
+
 pub fn preprocess_tokens(
     tokens: Vec<Token>,
     current_path: String,
     path: String,
     includes: Vec<String>,
     tapes: &mut Vec<Tape>,
-) -> Vec<Token> {
-    let new_tokens = include_includes(tokens, current_path, path, includes, tapes);
+) -> (Vec<Token>, Vec<String>) {
 
+    
+    let new_tokens = include_includes(tokens, current_path, path, includes, tapes);
+    
+    let (extern_funcs, new_tokens) = discover_extern_funcs(new_tokens.as_slice());
+    
     let (new_tokens, macros) = preprocess_macros(new_tokens, tapes);
 
-    unwrap_macros(new_tokens, macros)
+    (unwrap_macros(new_tokens, macros), extern_funcs)
 }

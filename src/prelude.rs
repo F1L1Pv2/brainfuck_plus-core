@@ -9,6 +9,7 @@ pub enum TokenType {
     ElseMacro,    // #else macro
     EndifMacro,   // #endif
     IncludeMacro, // #include
+    ExternFuncDecl, // #extern
     PointerLeft,  // <
     PointerRight, // >
     PointerReset, // &
@@ -30,13 +31,14 @@ pub enum TokenType {
     IncludePath,  // (std/loops.bf)
     TapeDecl,     // #tape
     CellSize,     // byte, word, dword, qword
-    TapeName,     // `{main}`
-    CurrentTape,  // @`{TapeName}`
+    TapeName,     // {main}
+    CurrentTape,  // @{TapeName}
     StackDel,     // *
     BitwiseLeft, // ;
     BitwiseRight, // :
     BitwiseAnd, // \
     BitwiseOr, // |
+    Funcall, // function()
 }
 
 #[derive(Debug, Clone, PartialEq)]

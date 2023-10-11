@@ -442,6 +442,17 @@ pub fn lex_token(
                                     return tokens;
                                 }
 
+                                "#extern" => {
+                                    tokens.push(Token {
+                                        token_type: TokenType::ExternFuncDecl,
+                                        value: word,
+                                        row: *row,
+                                        col,
+                                        filename: filename.clone(),
+                                    });
+                                    return tokens;
+                                }
+
                                 "#tape" => {
                                     tokens.push(Token {
                                         token_type: TokenType::TapeDecl,
@@ -498,6 +509,25 @@ pub fn lex_token(
                                 }
 
                                 _ => {
+
+
+                                    if word.ends_with("()"){
+
+                                        let len = word.len();
+                                        let funcall_name = word.chars().take(len-2).collect::<String>();
+
+                                        tokens.push(Token {
+                                            token_type: TokenType::Funcall,
+                                            value: funcall_name,
+                                            row: *row,
+                                            col,
+                                            filename: filename.clone(),
+                                        });
+
+                                        return tokens;
+                                    }
+
+
                                     // dbg!(&word);
                                     // exit(1);
 
